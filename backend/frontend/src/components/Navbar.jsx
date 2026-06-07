@@ -1,27 +1,26 @@
-import { useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import "../css/Navbar.css";
-import { useAuth } from "../hooks/useAuth"; 
+import { useState } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import '../css/Navbar.css';
+import { useAuth } from '../hooks/useAuth';
 
 function Navbar() {
-  const [menuOpen,   setMenuOpen]   = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
   const { user, isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
 
   const toggleMenu = () => setMenuOpen((prev) => !prev);
-  const closeMenu  = () => setMenuOpen(false);
+  const closeMenu = () => setMenuOpen(false);
 
   // Our user object has firstName + lastName from /api/auth/me
-  const displayName = user?.firstName
-    || user?.email?.split("@")[0]
-    || "Account";
+  const displayName =
+    user?.firstName || user?.email?.split('@')[0] || 'Account';
 
   async function handleSignOut() {
     setSigningOut(true);
     try {
       await logout();
-      navigate("/");
+      navigate('/');
     } catch (e) {
       console.error(e);
     } finally {
@@ -37,13 +36,16 @@ function Navbar() {
           <Link to="/" onClick={closeMenu}>
             <img src="/images/logo2.png" alt="Sakinah Logo" />
           </Link>
-          <button className="hamburger" onClick={toggleMenu}>☰</button>
+          <button className="hamburger" onClick={toggleMenu}>
+            ☰
+          </button>
         </div>
 
-        <ul className={`nav-links ${menuOpen ? "active" : ""}`}>
-
+        <ul className={`nav-links ${menuOpen ? 'active' : ''}`}>
           <li>
-            <NavLink to="/" onClick={closeMenu}>Home</NavLink>
+            <NavLink to="/" onClick={closeMenu}>
+              Home
+            </NavLink>
           </li>
 
           <li>
@@ -63,16 +65,44 @@ function Navbar() {
               Calculations
             </NavLink>
             <ul className="dropdown-menu">
-              <li><NavLink to="/calculations/zakat"       onClick={closeMenu}>Zakat</NavLink></li>
-              <li><NavLink to="/calculations/fitrah"      onClick={closeMenu}>Fitrah</NavLink></li>
-              <li><NavLink to="/calculations/inheritence" onClick={closeMenu}>Inheritence</NavLink></li>
-              <li><NavLink to="/calculations/iddat"       onClick={closeMenu}>Iddat</NavLink></li>
-              <li><NavLink to="/calculations/aqiqah"      onClick={closeMenu}>Aqiqah</NavLink></li>
+              <li>
+                <NavLink to="/calculations/zakat" onClick={closeMenu}>
+                  Zakat
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/calculations/fitrah" onClick={closeMenu}>
+                  Fitrah
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/calculations/inheritence" onClick={closeMenu}>
+                  Inheritence
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/calculations/iddat" onClick={closeMenu}>
+                  Iddat
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/calculations/aqiqah" onClick={closeMenu}>
+                  Aqiqah
+                </NavLink>
+              </li>
             </ul>
           </li>
 
           <li>
-            <NavLink to="/aboutus" onClick={closeMenu}>About Us</NavLink>
+            <NavLink to="/aboutus" onClick={closeMenu}>
+              About Us
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink to="/contactus" onClick={closeMenu}>
+              Contact Us
+            </NavLink>
           </li>
 
           {/* ── Auth-aware links ───────────────────────── */}
@@ -102,7 +132,7 @@ function Navbar() {
                       onClick={handleSignOut}
                       disabled={signingOut}
                     >
-                      {signingOut ? "Signing out..." : "Sign out"}
+                      {signingOut ? 'Signing out...' : 'Sign out'}
                     </button>
                   </li>
                 </ul>
@@ -111,18 +141,25 @@ function Navbar() {
           ) : (
             <>
               <li>
-                <NavLink to="/login" onClick={closeMenu} className="nav-login-btn">
+                <NavLink
+                  to="/login"
+                  onClick={closeMenu}
+                  className="nav-login-btn"
+                >
                   Login
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/signup" onClick={closeMenu} className="nav-signup-btn">
+                <NavLink
+                  to="/signup"
+                  onClick={closeMenu}
+                  className="nav-signup-btn"
+                >
                   Sign Up
                 </NavLink>
               </li>
             </>
           )}
-
         </ul>
       </nav>
     </header>
