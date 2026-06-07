@@ -43,14 +43,7 @@ export default function ContactUs() {
         </div>
 
         <div className="cu-hero__body">
-          <span className="cu-hero__eyebrow">
-            <span className="cu-hero__eyebrow-dot" />
-            Reach Out
-          </span>
-          <h1 className="cu-hero__title">
-            <span className="cu-hero__title-ar">تواصل معنا</span>
-            Contact Us
-          </h1>
+          <h1 className="cu-hero__title">Contact Us</h1>
           <p className="cu-hero__sub">
             Have a question, suggestion, or want to collaborate? We'd love to
             hear from you. Our team is here to help.
