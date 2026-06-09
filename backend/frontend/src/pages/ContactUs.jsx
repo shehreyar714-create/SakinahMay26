@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import '../css/ContactUs.css';
+import '../css/contactus.css';
 
 export default function ContactUs() {
   const [form, setForm] = useState({
