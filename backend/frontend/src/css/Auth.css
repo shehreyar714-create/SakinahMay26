@@ -7,8 +7,16 @@
   display: grid;
   grid-template-columns: minmax(20rem, 0.95fr) minmax(24rem, 1.05fr);
   background:
-    radial-gradient(circle at 15% 10%, rgba(230, 187, 81, 0.16), transparent 26rem),
-    radial-gradient(circle at 88% 22%, rgba(114, 198, 166, 0.1), transparent 28rem),
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(230, 187, 81, 0.16),
+      transparent 26rem
+    ),
+    radial-gradient(
+      circle at 88% 22%,
+      rgba(114, 198, 166, 0.1),
+      transparent 28rem
+    ),
     var(--bg-secondary);
   color: var(--text-primary);
 }
@@ -22,7 +30,11 @@
   padding: clamp(2rem, 5vw, 5rem);
   background:
     linear-gradient(135deg, rgba(26, 21, 16, 0.96), rgba(10, 9, 7, 0.96)),
-    radial-gradient(circle at 18% 16%, rgba(230, 187, 81, 0.16), transparent 17rem);
+    radial-gradient(
+      circle at 18% 16%,
+      rgba(230, 187, 81, 0.16),
+      transparent 17rem
+    );
   border-right: 1px solid var(--border-subtle);
 }
 
@@ -64,7 +76,7 @@
   font-family: 'Cairo', sans-serif;
   font-size: 0.75rem;
   font-weight: 800;
-  letter-spacing: 0.12em;
+  /* letter-spacing: 0.12em; */
   text-transform: uppercase;
 }
 
@@ -76,7 +88,7 @@
   font-size: clamp(2.3rem, 5vw, 4.4rem);
   font-weight: 900;
   line-height: 1.05;
-  letter-spacing: -0.08em;
+  /* letter-spacing: -0.08em; */
 }
 
 .auth-showcase h1 span {
@@ -212,7 +224,9 @@
   font-size: 0.9rem;
   font-weight: 700;
   text-decoration: none;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .auth-back-link:hover {
@@ -312,7 +326,10 @@
   border-radius: 0.75rem;
   background: rgba(21, 20, 19, 0.72);
   padding: 0 0.9rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
 .auth-page .auth-input-shell:focus-within {
@@ -382,7 +399,10 @@
   font-size: 1rem;
   font-weight: 900;
   box-shadow: 0 0.9rem 1.8rem rgba(230, 187, 81, 0.18);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
 }
 
 .auth-page .action-button:hover:not(:disabled) {
