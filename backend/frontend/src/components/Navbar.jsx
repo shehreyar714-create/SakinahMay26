@@ -149,15 +149,6 @@ function Navbar() {
                   Login
                 </NavLink>
               </li>
-              <li>
-                <NavLink
-                  to="/signup"
-                  onClick={closeMenu}
-                  className="nav-signup-btn"
-                >
-                  Sign Up
-                </NavLink>
-              </li>
             </>
           )}
         </ul>
