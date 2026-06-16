@@ -1,0 +1,57 @@
+.mosques-page {
+  flex: 1;
+  padding: 2rem;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-header h1 {
+  color: var(--text-gold);
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  color: var(--text-secondary);
+}
+
+.mosque-card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.mosque-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-glow-sm);
+}
+
+.mosque-card h3 {
+  color: var(--text-gold);
+  margin-bottom: 1rem;
+}
+
+.mosque-card p {
+  margin-bottom: 0.5rem;
+}
+
+.mosque-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.mosque-actions button {
+  padding: 0.65rem 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  font-weight: 600;
+}

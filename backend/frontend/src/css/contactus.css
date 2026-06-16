@@ -7,7 +7,7 @@
   --primary-dark: #115e59;
   --secondary: #f8fafc;
   --gold: #d4af37;
-  --text: #1f2937;
+  --text: #ffffff;
   --text-light: #6b7280;
   --border: #e5e7eb;
   --white: #ffffff;
@@ -22,7 +22,7 @@ body {
   margin: 0;
   font-family: 'Inter', sans-serif;
   color: var(--text);
-  background: #f7f9fb;
+  background: #232323;
 }
 
 /* =========================

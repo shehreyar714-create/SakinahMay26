@@ -1,112 +1,89 @@
-import { useState, useEffect, useMemo } from "react";
-import "../css/Home.css";
-import { useLocation } from "../hooks/useLocation"; 
-import { usePrayerTimes } from "../hooks/usePrayerTimes";
+import { useState, useEffect, useMemo } from 'react';
+import '../css/Home.css';
+import { useLocation } from '../hooks/useLocation';
+import { usePrayerTimes } from '../hooks/usePrayerTimes';
+
+const PRAYER_ORDER = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 
 function PrayerCard({ selectedDate }) {
   const { coords } = useLocation();
-
   const [manualCoords, setManualCoords] = useState(null);
-  const [locationInput, setLocationInput] = useState("");
-  const [countdown, setCountdown] = useState("");
+  const [locationInput, setLocationInput] = useState('');
+  const [countdown, setCountdown] = useState('');
   const [nextPrayerName, setNextPrayerName] = useState(null);
 
   const activeCoords = manualCoords || coords;
+  const { data, loading, error } = usePrayerTimes(selectedDate, activeCoords);
 
-  const { data, loading, error } = usePrayerTimes(
-    selectedDate,
-    activeCoords
-  );
-
-  /* ---------------- NEXT PRAYER LOGIC ---------------- */
-
-  const prayerOrder = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
-
+  /* ── Next prayer logic ──────────────────────────────────────── */
   const nextPrayer = useMemo(() => {
     if (!data) return null;
-
     const now = new Date();
-    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+    const current = now.getHours() * 60 + now.getMinutes();
 
-    for (let name of prayerOrder) {
-      const [h, m] = data.timings[name]
-        .split(":")
-        .map(Number);
-
-      const minutes = h * 60 + m;
-
-      if (minutes > currentMinutes) {
-        return { name, time: data.timings[name] };
-      }
+    for (const name of PRAYER_ORDER) {
+      const [h, m] = data.timings[name].split(':').map(Number);
+      if (h * 60 + m > current) return { name, time: data.timings[name] };
     }
-
     return null;
   }, [data]);
 
   useEffect(() => {
     if (!nextPrayer) return;
-
     setNextPrayerName(nextPrayer.name);
 
-    let interval;
-
-    const updateCountdown = () => {
+    const tick = () => {
       const now = new Date();
-      const [h, m] = nextPrayer.time
-        .split(":")
-        .map(Number);
-
+      const [h, m] = nextPrayer.time.split(':').map(Number);
       const target = new Date();
       target.setHours(h, m, 0, 0);
 
-      let diff = target - now;
-
+      const diff = target - now;
       if (diff <= 0) {
         setCountdown("It's time!");
-        clearInterval(interval);
         return;
       }
 
       const hrs = Math.floor(diff / 3600000);
       const mins = Math.floor((diff % 3600000) / 60000);
       const secs = Math.floor((diff % 60000) / 1000);
-
-      setCountdown(`in ${hrs}h ${mins}m ${secs}s`);
+      setCountdown(`${hrs}h ${mins}m ${secs}s`);
     };
 
-    updateCountdown();
-    interval = setInterval(updateCountdown, 1000);
-
-    return () => clearInterval(interval);
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
   }, [nextPrayer]);
 
-  /* ---------------- MANUAL CITY SEARCH ---------------- */
-
+  /* ── City search ────────────────────────────────────────────── */
   const searchLocation = async () => {
     if (!locationInput.trim()) return;
-
     try {
       const res = await fetch(
         `https://api.aladhan.com/v1/timingsByCity?city=${locationInput}&country=India&method=2`
       );
-
       const result = await res.json();
-
-      const lat = result.data.meta.latitude;
-      const lng = result.data.meta.longitude;
-
-      setManualCoords({ lat, lng });
+      setManualCoords({
+        lat: result.data.meta.latitude,
+        lng: result.data.meta.longitude,
+      });
     } catch (err) {
-      console.log("City search failed:", err);
+      console.error('City search failed:', err);
     }
   };
 
-  /* ---------------- RENDER ---------------- */
-
+  /* ── Render ─────────────────────────────────────────────────── */
   if (loading) {
     return (
       <section className="prayer-card-container">
-        <div className="container">Loading prayer times...</div>
+        <div className="prayer-card-loading">
+          <div className="font-aref text-4xl text-text-gold animate-glow-pulse mb-4">
+            🕌
+          </div>
+          <p className="font-cairo text-lg text-text-secondary">
+            Loading prayer times…
+          </p>
+        </div>
       </section>
     );
   }
@@ -114,7 +91,9 @@ function PrayerCard({ selectedDate }) {
   if (error) {
     return (
       <section className="prayer-card-container">
-        <div className="container">Error: {error}</div>
+        <div className="prayer-card-loading text-red-400">
+          Unable to load prayer times. Check your connection.
+        </div>
       </section>
     );
   }
@@ -125,92 +104,69 @@ function PrayerCard({ selectedDate }) {
 
   return (
     <section className="prayer-card-container">
-      <div className="container">
-        <div className="topcontainer">
-          <div className="leftside">
-            <p className="miniheading">Prayer Times in</p>
-            <h1>
-              {meta?.timezone || "Detected Location"}
-            </h1>
+      <div className="prayer-card-inner">
+        {/* ── Top row: location + dates ─────────────────────── */}
+        <div className="prayer-top-row">
+          <div>
+            <p className="prayer-location-label">Prayer Times in</p>
+            <h2 className="prayer-location-title">
+              {meta?.timezone || 'Detected Location'}
+            </h2>
           </div>
 
-          <div className="rightside">
-            <div id="gregorianDate">
-              {date.gregorian.weekday.en},{" "}
-              {date.gregorian.date}{" "}
-              {date.gregorian.month.en}{" "}
-              {date.gregorian.year}
+          <div className="prayer-date-block">
+            <div className="prayer-gregorian-date">
+              {date.gregorian.weekday.en}, {date.gregorian.date}{' '}
+              {date.gregorian.month.en} {date.gregorian.year}
             </div>
-
-            <div id="hijriDate">
-              {date.hijri.date}{" "}
-              {date.hijri.month.en}{" "}
-              {date.hijri.year}
+            <div className="prayer-hijri-date">
+              {date.hijri.date} {date.hijri.month.en} {date.hijri.year}
             </div>
           </div>
         </div>
 
-        <div className="bottomcontainer">
-          <div className="search-box">
+        {/* ── Controls: search + badges ────────────────────── */}
+        <div className="prayer-controls-row">
+          <div className="prayer-search-box">
             <input
               type="text"
-              placeholder="Type your city"
+              className="prayer-search-input"
+              placeholder="Search your city…"
               value={locationInput}
-              onChange={(e) =>
-                setLocationInput(e.target.value)
-              }
-              onKeyDown={(e) =>
-                e.key === "Enter" && searchLocation()
-              }
+              onChange={(e) => setLocationInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && searchLocation()}
             />
-            <button onClick={searchLocation}>
+            <button className="prayer-search-btn" onClick={searchLocation}>
               Search
             </button>
           </div>
 
-          <div className="top-info">
-            <div className="badge">
-              {meta.method.name}
-            </div>
-            <div className="badge">
-              Imsak {timings.Imsak} | Sunrise{" "}
-              {timings.Sunrise}
-            </div>
+          <div className="prayer-badges">
+            <span className="prayer-badge">{meta.method.name}</span>
+            <span className="prayer-badge">
+              Imsak {timings.Imsak} · Sunrise {timings.Sunrise}
+            </span>
           </div>
         </div>
 
-        <div className="times-grid">
-          {prayerOrder.map((name) => (
-            <div
-              key={name}
-              className={`card ${
-                name === nextPrayerName ? "next" : ""
-              }`}
-            >
-              {name === nextPrayerName && (
-                <div className="next-label">
-                  Next
-                </div>
-              )}
-
-              <div>{name}</div>
-
+        {/* ── Prayer times grid ────────────────────────────── */}
+        <div className="prayer-times-grid">
+          {PRAYER_ORDER.map((name) => {
+            const isNext = name === nextPrayerName;
+            return (
               <div
-                style={{
-                  fontSize: "35px",
-                  marginTop: "10px",
-                }}
+                key={name}
+                className={`prayer-time-card ${isNext ? 'next-prayer' : ''}`}
               >
-                {timings[name]}
-              </div>
+                {isNext && <span className="next-prayer-label">Next ▸</span>}
 
-              {name === nextPrayerName && (
-                <div className="countdown">
-                  {countdown}
-                </div>
-              )}
-            </div>
-          ))}
+                <p className="prayer-name">{name}</p>
+                <p className="prayer-time">{timings[name]}</p>
+
+                {isNext && <p className="prayer-countdown">{countdown}</p>}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

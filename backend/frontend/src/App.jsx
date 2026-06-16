@@ -24,6 +24,12 @@ import PrayerTracker from './pages/PrayerTracker';
 import Profile from './pages/Profile';
 // Route guard
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { RoleProtectedRoute } from './components/RoleProtectedRoute';
+// Dashboard pages
+import Dashboard from '../src/pages/Dashboard';
+import AdminDashboard from './pages/admin/AdminDashboard';
+
+import MosquesPage from './pages/admin/MosquesPage';
 
 function App() {
   return (
@@ -78,6 +84,32 @@ function App() {
             <ProtectedRoute>
               <Profile />
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin-dashboard"
+          element={
+            <RoleProtectedRoute allowedRoles={['ADMIN', 'SUPERADMIN']}>
+              <AdminDashboard />
+            </RoleProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard/mosques"
+          element={
+            <RoleProtectedRoute allowedRoles={['ADMIN', 'SUPERADMIN']}>
+              <MosquesPage />
+            </RoleProtectedRoute>
           }
         />
       </Routes>

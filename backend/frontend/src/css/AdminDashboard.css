@@ -1,0 +1,135 @@
+.dashboard-layout {
+  display: flex;
+}
+
+.dashboard-main {
+  flex: 1;
+}
+
+.admin-dashboard {
+  min-height: 100vh;
+  padding: 2rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+  font-size: 2rem;
+  color: var(--text-gold);
+}
+
+.dashboard-role {
+  background: var(--primary-500);
+  color: black;
+  padding: 0.7rem 1.2rem;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  padding: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  box-shadow: var(--shadow-glow-sm);
+}
+
+.stat-card svg {
+  font-size: 2rem;
+  color: var(--text-gold);
+}
+
+.stat-card h3 {
+  font-size: 1.8rem;
+}
+
+.dashboard-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.dashboard-panel {
+  background: var(--card-bg);
+  border-radius: 18px;
+  padding: 1.5rem;
+  border: 1px solid var(--border-subtle);
+}
+
+.dashboard-panel h2 {
+  margin-bottom: 1rem;
+  color: var(--text-gold);
+}
+
+.approval-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.approval-item button {
+  background: var(--btn-primary-bg);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.activity-item {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.superadmin-section {
+  margin-top: 3rem;
+}
+
+.superadmin-section h2 {
+  color: var(--text-gold);
+  margin-bottom: 1rem;
+}
+
+.super-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.super-btn {
+  padding: 1rem;
+  border-radius: 14px;
+  border: 1px solid var(--border-accent);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.super-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-glow-hover-md);
+}
+
+@media (max-width: 900px) {
+  .dashboard-content {
+    grid-template-columns: 1fr;
+  }
+}
